@@ -11,11 +11,11 @@ pub struct Cli {
 #[derive(Subcommand)]
 pub enum Codec {
     /// Use C1 codec
-    C1 { img_filepath: Option<String> },
+    C1 { img_filepath: String },
     /// Use C2 codec
-    C2 { img_filepath: Option<String> },
+    C2 { img_filepath: String },
     /// Use CIMap codec
-    CIMap { img_filepath: Option<String> },
+    CIMap { img_filepath: String },
     /// Use CIMap codec
-    CIMap2 { img_filepath: Option<String> },
+    CIMap2 { img_filepath: String },
 }

@@ -43,6 +43,7 @@
         devShell = pkgs.mkShell {
           buildInputs =  [
             pkgs.cargo
+            pkgs.rustfmt
             pkgs.rust-analyzer
             pkgs.clippy
             pkgs.just
