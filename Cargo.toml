@@ -1,0 +1,8 @@
+[package]
+authors = ["Eduardo Lemos Rocha <dudulr10@gmail.com>"]
+edition = "2021"
+name = "rusting-images"
+version = "0.1.0"
+
+[dependencies]
+
