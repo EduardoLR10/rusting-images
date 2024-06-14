@@ -20,5 +20,8 @@ pub enum Codec {
         n_colors: usize,
     },
     /// Use CIMap codec
-    CIMap2 { img_filepath: String },
+    CIMap2 {
+        img_filepath: String,
+        n_colors: usize,
+    },
 }

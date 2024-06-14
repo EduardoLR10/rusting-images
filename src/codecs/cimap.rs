@@ -93,9 +93,9 @@ fn lbg(codebook_size: usize, img: &mut ImageBuffer<Rgb<u8>, Vec<u8>>) {
     let (width, height) = img.dimensions();
     for y in 0..width {
         for x in 0..height {
-            let pixel = img.get_pixel(x, y);
+            let pixel = img.get_pixel(y, x);
             let index = find_closest_index(&centroids, pixel);
-            img.put_pixel(x, y, centroids[index])
+            img.put_pixel(y, x, centroids[index])
         }
     }
 }

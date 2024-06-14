@@ -6,8 +6,8 @@ mod codecs;
 use codecs::c1;
 use codecs::c2;
 use codecs::cimap;
-use image::PixelWithColorType;
-use image::{EncodableLayout, ImageBuffer, Pixel, Rgba};
+use codecs::cimap2;
+use image::{EncodableLayout, ImageBuffer, Pixel, PixelWithColorType, Rgba};
 use std::ops::Deref;
 
 fn load_image(img_filepath: &String) -> ImageBuffer<Rgba<u8>, Vec<u8>> {
@@ -53,8 +53,14 @@ fn main() {
             let final_img = cimap::quantize_image(img, n_colors.to_owned());
             save_image(final_img, img_filepath, "_cimap.bmp".to_string())
         }
-        _ => {
-            todo!("CIMap2 codecs are not implemented yet");
+        Codec::CIMap2 {
+            img_filepath,
+            n_colors,
+        } => {
+            let img = load_image(img_filepath);
+            println!("Applying CIMap2 codec...");
+            let final_img = cimap2::make_image_with_dithering(img, n_colors.to_owned(), None);
+            save_image(final_img, img_filepath, "_cimap2.bmp".to_string())
         }
     }
 }
