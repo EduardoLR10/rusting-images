@@ -5,34 +5,56 @@ use cli::Codec;
 mod codecs;
 use codecs::c1;
 use codecs::c2;
+use codecs::cimap;
+use image::PixelWithColorType;
+use image::{EncodableLayout, ImageBuffer, Pixel, Rgba};
+use std::ops::Deref;
+
+fn load_image(img_filepath: &String) -> ImageBuffer<Rgba<u8>, Vec<u8>> {
+    println!("Loading image...");
+    let img = image::open(img_filepath).unwrap().into_rgba8();
+    println!("Image loaded!");
+    img
+}
+
+fn save_image<T, U>(img: ImageBuffer<T, U>, img_filepath: &String, suffix_filepath: String)
+where
+    T: Pixel + PixelWithColorType,
+    [T::Subpixel]: EncodableLayout,
+    U: Deref<Target = [T::Subpixel]>,
+{
+    println!("Saving image...");
+    let mut final_img_path: String = img_filepath[0..img_filepath.len() - 4].to_string();
+    final_img_path.push_str(&suffix_filepath);
+    img.save(final_img_path).unwrap()
+}
 
 fn main() {
     let cli = Cli::parse();
     match &cli.codec {
         Codec::C1 { img_filepath } => {
-            println!("Loading image...");
-            let img = image::open(img_filepath).unwrap().into_rgba8();
-            println!("Image loaded!");
+            let img = load_image(img_filepath);
             println!("Applying C1 codec...");
             let final_img = c1::make_image_discrete(img);
-            println!("Saving image...");
-            let mut final_img_path: String = img_filepath[0..img_filepath.len() - 4].to_string();
-            final_img_path.push_str("_c1.bmp");
-            final_img.save(final_img_path).unwrap()
+            save_image(final_img, img_filepath, "_c1.bmp".to_string())
         }
         Codec::C2 { img_filepath } => {
-            println!("Loading image...");
-            let img = image::open(img_filepath).unwrap().into_rgba8();
-            println!("Image loaded!");
+            let img = load_image(img_filepath);
             println!("Applying C2 codec...");
             let final_img = c2::make_image_with_dithering(img, None);
-            println!("Saving image...");
-            let mut final_img_path: String = img_filepath[0..img_filepath.len() - 4].to_string();
-            final_img_path.push_str("_c2.bmp");
-            final_img.save(final_img_path).unwrap()
+            save_image(final_img, img_filepath, "_c2.bmp".to_string())
+        }
+        Codec::CIMap {
+            img_filepath,
+            n_colors,
+        } => {
+            let img = load_image(img_filepath);
+            println!("Applying CIMap codec...");
+            let final_img = cimap::quantize_image(img, n_colors.to_owned());
+            save_image(final_img, img_filepath, "_cimap.bmp".to_string())
         }
         _ => {
-            todo!("CIMap, CIMap2 codecs are not implemented yet");
+            todo!("CIMap2 codecs are not implemented yet");
         }
     }
 }
