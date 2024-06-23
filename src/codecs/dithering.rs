@@ -11,21 +11,19 @@ pub const FLOYD_STEINBERG: DitheringMask = [
 
 pub trait Ditherable<T: Pixel + PixelWithColorType, U: Pixel + PixelWithColorType> {
     fn clip(&self) -> T;
-    fn unclip(&self) -> U;
     fn quant_error(&self, other: T) -> f64;
     fn propagate_error(&self, error: f64, propagation: f64) -> T;
 }
 
 pub fn dithering<T, U, V>(
-    mut img: ImageBuffer<T, U>,
+    img: &mut ImageBuffer<T, U>,
     optional_mask: Option<DitheringMask>,
-) -> ImageBuffer<V, Vec<<V as Pixel>::Subpixel>>
+)
 where
     V: Pixel + PixelWithColorType,
     T: Pixel + PixelWithColorType + Ditherable<T, V>,
     [T::Subpixel]: EncodableLayout,
-    U: Deref<Target = [T::Subpixel]>,
-    U: DerefMut,
+    U: Deref<Target = [T::Subpixel]> + DerefMut,
 {
     let mask = optional_mask.unwrap_or(FLOYD_STEINBERG);
     let (width, height) = img.dimensions();
@@ -57,8 +55,4 @@ where
             }
         }
     }
-    ImageBuffer::from_fn(width, height, |x, y| {
-        let value = img.get_pixel(x, y);
-        Ditherable::unclip(value)
-    })
 }

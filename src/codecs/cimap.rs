@@ -1,4 +1,4 @@
-use image::{DynamicImage, ImageBuffer, Pixel, Rgb, Rgba};
+use image::{DynamicImage, ImageBuffer, Pixel, Rgb};
 use std::collections::HashMap;
 use std::collections::HashSet;
 use std::iter::FromIterator;
@@ -101,10 +101,10 @@ fn lbg(codebook_size: usize, img: &mut ImageBuffer<Rgb<u8>, Vec<u8>>) {
 }
 
 pub fn quantize_image(
-    img: ImageBuffer<Rgba<u8>, Vec<u8>>,
+    img: ImageBuffer<Rgb<u8>, Vec<u8>>,
     n_colors: usize,
 ) -> ImageBuffer<Rgb<u8>, Vec<u8>> {
-    let mut img_rgb = DynamicImage::ImageRgba8(img).into_rgb8();
+    let mut img_rgb = DynamicImage::ImageRgb8(img).into_rgb8();
     lbg(n_colors, &mut img_rgb);
     img_rgb
 }
