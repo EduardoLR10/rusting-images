@@ -1,0 +1,27 @@
+#+TITLE: Rusting Images
+#+AUTHOR: Eduardo Lemos 
+#+DATE: 23/06/2024
+#+EMAIL: dudulr10@gmail.com.br
+
+Rusting images is an image manipulation software. You can apply a few codecs specified in this [[./docs/projeto2_quantizacao.pdf][document]] (in portuguese).
+You can find the documents folder the [[./docs/report.pdf][report]] with the findings of this project.
+
+* Instructions
+
+You are suppose to use Nix to build the project, via ~nix build~. However, within ~nix develop~, you can run ~cargo~ commands,
+such as:
+
+#+begin_src bash
+  $ cargo run -- c1 ./assets/kodim03.png
+  $ cargo build
+  $ cargo run -- c2 ./assets/kodim03.png
+#+end_src
+
+It should be possible to use your own external ~cargo~, i.e., the one you installed yourself,
+assuming the version will be correct (it should be version 1.75.0).
+
+* Observations
+
+- Images generated via the software will add suffixes to the name for better differentiation,
+  e.g., ~image_c1.bmp~, ~image_cimap.png~.
+- No parallelization and/or concurrency is being used in the latest version of ~rusting-images~.  
