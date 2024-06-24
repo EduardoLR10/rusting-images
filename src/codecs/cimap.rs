@@ -1,4 +1,4 @@
-use image::{DynamicImage, ImageBuffer, Pixel, Rgb};
+use image::{ImageBuffer, Pixel, Rgb};
 use std::collections::HashMap;
 use std::collections::HashSet;
 use std::iter::FromIterator;
@@ -84,12 +84,6 @@ fn lbg(codebook_size: usize, img: &mut ImageBuffer<Rgb<u8>, Vec<u8>>) {
     }
     let centroids = clustering(codebook_size, initial_centroids, img.pixels());
 
-    // for (cluster_index, cluster) in clusters.into_iter().enumerate() {
-    // 	for mut pixel in cluster {
-    // 	    let value = new_centroids[cluster_index];
-    // 	}
-    // }
-
     let (width, height) = img.dimensions();
     for y in 0..width {
         for x in 0..height {
@@ -104,7 +98,7 @@ pub fn quantize_image(
     img: ImageBuffer<Rgb<u8>, Vec<u8>>,
     n_colors: usize,
 ) -> ImageBuffer<Rgb<u8>, Vec<u8>> {
-    let mut img_rgb = DynamicImage::ImageRgb8(img).into_rgb8();
+    let mut img_rgb = img.clone();
     lbg(n_colors, &mut img_rgb);
     img_rgb
 }

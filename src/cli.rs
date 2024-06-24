@@ -5,11 +5,11 @@ use clap::{Parser, Subcommand};
 #[command(propagate_version = true)]
 pub struct Cli {
     #[command(subcommand)]
-    pub codec: Codec,
+    pub command: Command,
 }
 
 #[derive(Subcommand)]
-pub enum Codec {
+pub enum Command {
     /// Use C1 codec
     C1 { img_filepath: String },
     /// Use C2 codec
@@ -24,4 +24,8 @@ pub enum Codec {
         img_filepath: String,
         n_colors: usize,
     },
+    Psnr {
+	reference_img_filepath: String,
+	test_img_filepath: String
+    }
 }
